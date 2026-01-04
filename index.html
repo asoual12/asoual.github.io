@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asoual – Chambres froides & équipements thermiques</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Story+Script&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        :root {
+            --white: #ffffff;
+            --gray-50: #f8f9fa;
+            --gray-100: #eceff1;
+            --gray-200: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-600: #5c6770;
+            --gray-700: #343a40;
+            --accent: #2a6f97;
+            --accent-soft: #d0ebff;
+            --accent-dark: #144765;
+            --radius: 14px;
+            --shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Inter", sans-serif; }
+        body { background: var(--gray-50); color: var(--gray-700); line-height: 1.6; }
+        a, a:visited { color: inherit; text-decoration: none; }
+        a:hover, a:focus { color: var(--accent); text-decoration: none; }
+
+        header { background: var(--white); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06); position: sticky; top: 0; z-index: 50; }
+        .wrapper { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 0; }
+        nav ul { list-style: none; display: flex; gap: 1.4rem; }
+        nav a { font-weight: 600; padding-bottom: 0.35rem; border-bottom: 2px solid transparent; transition: color 0.2s ease, border-color 0.2s ease; }
+        nav a:hover, nav a.active { border-color: var(--accent); color: var(--accent); }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            background: var(--accent); color: var(--white); padding: 0.95rem 1.8rem;
+            border-radius: 999px; border: none; font-weight: 600; cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(42, 111, 151, 0.35); }
+
+        .mobile-nav { display: none; background: none; color: var(--gray-700); font-size: 1.4rem; }
+        .mobile-menu { display: none; flex-direction: column; gap: 0.8rem; padding-bottom: 1rem; }
+        .mobile-menu.open { display: flex; background: var(--white); border-top: 1px solid var(--gray-100); }
+        .mobile-menu a { padding: 0.6rem 0; font-weight: 600; }
+
+        .hero {
+            position: relative;
+            padding: 5rem 0 5.5rem;
+            text-align: center;
+            color: var(--white);
+            background-image:
+                linear-gradient(120deg, rgba(12, 28, 49, 0.75), rgba(33, 77, 118, 0.75)),
+                url("https://www.apicius-shop.com/media/wysiwyg/AdobeStock_410061237.jpeg");
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+        .hero .wrapper { position: relative; z-index: 1; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 1rem; line-height: 1.15; }
+        .hero p { max-width: 750px; margin: 0 auto 2.2rem; color: var(--gray-50); font-size: 1.05rem; }
+
+        section { padding: 4.5rem 0; }
+        .section-title { text-align: center; margin-bottom: 2.8rem; }
+        .section-title h2 { font-size: 2rem; margin-bottom: 0.6rem; }
+        .section-title p { color: var(--gray-600); }
+
+        .grid { display: grid; gap: 1.8rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.8rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-100);
+            overflow: hidden;
+            position: relative;
+        }
+        .card figure {
+            margin: -1.8rem -1.8rem 1.4rem;
+            height: 180px;
+            overflow: hidden;
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-icon {
+            width: 70px; height: 70px; border-radius: 18px;
+            background: var(--accent-soft); display: flex; align-items: center;
+            justify-content: center; font-size: 1.8rem; color: var(--accent);
+            margin-bottom: 1.2rem;
+        }
+
+        .order-section { background: var(--gray-50); }
+        .order-layout { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .order-box { background: var(--white); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); border: 1px solid var(--gray-100); }
+        .order-box h3 { margin-bottom: 1.2rem; }
+        .order-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; color: var(--gray-600); }
+        .order-box li { display: flex; gap: 0.8rem; }
+        .order-box li i { color: #22a06b; margin-top: 0.2rem; }
+        form .group { margin-bottom: 1.1rem; }
+        label { font-weight: 600; display: block; margin-bottom: 0.35rem; }
+        input, textarea {
+            width: 100%; border: 1px solid var(--gray-200); border-radius: 10px;
+            padding: 0.85rem 1rem; font-size: 1rem; transition: border 0.2s ease; background: var(--gray-50);
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--accent); background: var(--white); }
+        textarea { resize: vertical; min-height: 120px; }
+
+        .product-line {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem; border-radius: 12px; background: var(--gray-50); margin-bottom: 0.8rem;
+        }
+        .product-line span { font-weight: 600; }
+        .qty-controls { display: flex; align-items: center; gap: 0.7rem; }
+        .qty-btn {
+            width: 34px; height: 34px; border-radius: 50%; border: none;
+            background: var(--gray-200); font-weight: 700; cursor: pointer; transition: background 0.2s ease;
+        }
+        .qty-btn:hover { background: var(--accent); color: var(--white); }
+
+        .counter {
+            background: var(--gray-50); border-radius: var(--radius); padding: 1.5rem;
+            text-align: center; border: 1px dashed var(--gray-200); margin-top: 1.2rem;
+        }
+        .counter span { display: block; font-size: 2rem; font-weight: 700; color: var(--accent); }
+
+        .stepper {
+            display: grid;
+            grid-template-columns: minmax(250px, 320px) 1fr;
+            gap: 2rem;
+            align-items: stretch;
+        }
+        .step-list {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-100);
+            box-shadow: var(--shadow);
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .step-btn {
+            border: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            border-radius: 10px;
+            padding: 0.95rem 1rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+        }
+        .step-btn.active {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+        .step-detail {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-100);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-progress {
+            width: 100%;
+            height: 6px;
+            background: var(--gray-100);
+            border-radius: 999px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #3ba6d8);
+            border-radius: 999px;
+            transition: width 0.4s ease;
+        }
+        .step-detail h3 { margin-bottom: 0.6rem; }
+        .step-detail p { color: var(--gray-600); margin-bottom: 0.8rem; }
+        .step-detail ul { color: var(--gray-600); margin-left: 1rem; }
+
+        .after-quote {
+            background: var(--white);
+            border-top: 1px solid var(--gray-100);
+        }
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .timeline-step {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--gray-100);
+            position: relative;
+        }
+        .timeline-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 10px 18px rgba(42, 111, 151, 0.35);
+        }
+        .timeline-step h4 { margin-bottom: 0.5rem; }
+
+        .contact-grid { display: grid; gap: 1.8rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .contact-card {
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-100);
+            box-shadow: var(--shadow);
+            background: var(--white);
+            padding: 1.8rem;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .contact-card:hover { transform: translateY(-4px); box-shadow: 0 18px 35px rgba(0,0,0,0.12); }
+        .contact-card .card-icon { margin: 0 auto 1rem; }
+
+        footer { background: var(--gray-700); color: var(--gray-200); padding: 3rem 0 2rem; }
+        footer .grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        footer h4 { color: var(--white); margin-bottom: 1rem; }
+        footer a { color: var(--gray-200); transition: color 0.2s ease; }
+        footer a:hover { color: var(--white); }
+
+        .footer-credit {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            text-transform: none;
+            letter-spacing: 0.05em;
+            color: var(--gray-400);
+            font-family: "Story Script", cursive;
+            display: block;
+        }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 992px) {
+            .stepper { grid-template-columns: 1fr; }
+            .step-list { flex-direction: row; overflow-x: auto; }
+            .step-btn { flex: 1 0 220px; white-space: nowrap; }
+        }
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            .mobile-nav { display: inline-flex; }
+            .hero { padding: 4rem 0; }
+            .timeline-step::before { left: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="wrapper">
+            <div class="header-inner">
+                <div class="logo" style="display:flex;align-items:center;gap:0.8rem;">
+                    <div style="background:var(--accent);color:white;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <div>
+                        <strong style="font-size:1.2rem;">Asoual</strong><br />
+                        <small style="color:var(--gray-600);">Chambres froides & équipements</small>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a class="active" href="#accueil">Accueil</a></li>
+                        <li><a href="#solutions">Solutions</a></li>
+                        <li><a href="#installations">Installations</a></li>
+                        <li><a href="#devis">Devis</a></li>
+                        <li><a href="#apres-devis">Processus</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <button class="btn mobile-nav" id="burgerButton">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobileDrawer">
+                <a href="#accueil">Accueil</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#installations">Installations</a>
+                <a href="#devis">Devis</a>
+                <a href="#apres-devis">Processus</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="accueil">
+        <div class="wrapper">
+            <h1>Asoual – Le froid sur mesure pour vos activités critiques</h1>
+            <p>Chambres froides positives et négatives, compresseurs de toutes puissances, évaporateurs haut rendement, panneaux sandwich, armoires électriques intelligentes et portes isothermes conçus pour sécuriser vos flux alimentaires, pharmaceutiques et logistiques.</p>
+            <a href="#devis" class="btn"><i class="fas fa-drafting-compass"></i> Demander un devis gratuit</a>
+        </div>
+    </section>
+
+    <section id="solutions">
+        <div class="wrapper">
+            <div class="section-title reveal">
+                <h2>Nos solutions thermiques</h2>
+                <p>Des composants certifiés pour des performances constantes, du laboratoire artisanal à l’entrepôt logistique.</p>
+            </div>
+            <div class="grid">
+                <article class="card reveal">
+                    <figure>
+                        <img src="https://www.apicius-shop.com/media/wysiwyg/AdobeStock_410061237.jpeg" alt="Chambre froide positive équipée" />
+                    </figure>
+                    <h3>Chambres froides clés en main</h3>
+                    <p>Volumes modulaires ou sur-mesure, températures de -30 °C à +10 °C, monitoring IoT intégré.</p>
+                </article>
+                <article class="card reveal">
+                    <figure>
+                        <img src="https://isofroid-dz.com/storage/img/produits/small/produit-1646040719.jpg" alt="Compresseurs industriels" />
+                    </figure>
+                    <h3>Compresseurs toutes puissances</h3>
+                    <p>Technologies scroll, piston ou vis, compatibles HFO/HFC/ammoniac, variateurs de vitesse en option.</p>
+                </article>
+                <article class="card reveal">
+                    <figure>
+                        <img src="https://www.linble-coldroom.com/wp-content/uploads/2025/01/Wall-Mounted-Evaporator.jpg" alt="Batteries d'évaporateurs" />
+                    </figure>
+                    <h3>Évaporateurs optimisés</h3>
+                    <p>Débits d’air maîtrisés, dégivrage gaz chaud ou électrique, rendement énergétique maximisé.</p>
+                </article>
+                <article class="card reveal">
+                    <figure>
+                        <img src="https://image.made-in-china.com/202f0j00OMPbBWvRfjqa/PU-PIR-PUR-Board-Building-Material-Sandwich-Panel-for-Cold-Room-Clean-Room.webp" alt="Panneaux sandwich isolants" />
+                    </figure>
+                    <h3>Panneaux sandwich</h3>
+                    <p>Isolation haute densité, parements inox ou acier laqué, feuillures à rupture thermique.</p>
+                </article>
+                <article class="card reveal">
+                    <figure>
+                        <img src="https://www.e-genieclimatique.com/wordpress/wp-content/uploads/2013/02/01_armoire_electrique_chambre_froide_negative_en_fonctionnement_mr4_-16c-225x300.jpg" alt="Armoire électrique connectée" />
+                    </figure>
+                    <h3>Armoires électriques</h3>
+                    <p>Automates programmables, supervision à distance, gestion d’alarmes et reporting énergétique.</p>
+                </article>
+                <article class="card reveal">
+                    <figure>
+                        <img src="https://www.linble-coldroom.com/wp-content/uploads/2025/01/Cold-Room-Sliding-Door.jpg" alt="Porte isotherme coulissante" />
+                    </figure>
+                    <h3>Portes de chambre froide</h3>
+                    <p>Portes battantes, coulissantes ou rapides avec options anti-condensation et coupe-froid.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="installations">
+        <div class="wrapper">
+            <div class="section-title reveal">
+                <h2>Installation & mise en service</h2>
+                <p>Un processus piloté pour sécuriser vos denrées et optimiser chaque kilowatt frigorifique.</p>
+            </div>
+            <div class="stepper">
+                <div class="step-list">
+                    <button class="step-btn active" data-step="0">Audit & relevés thermiques</button>
+                    <button class="step-btn" data-step="1">Ingénierie & dimensionnement</button>
+                    <button class="step-btn" data-step="2">Montage & raccordements</button>
+                    <button class="step-btn" data-step="3">Mise en service & supervision</button>
+                </div>
+                <div class="step-detail reveal">
+                    <div class="step-progress"><div class="progress-bar" id="progressBar"></div></div>
+                    <h3 id="stepTitle">Audit & relevés thermiques</h3>
+                    <p id="stepDescription">Mesures hygrométriques, étude des flux, scénarios de charge simultanée et contraintes électriques pour bâtir un dossier complet.</p>
+                    <ul id="stepBullets">
+                        <li>Cartographie 3D des volumes et capteurs.</li>
+                        <li>Analyse des produits stockés et cycles de chargement.</li>
+                        <li>Rapport de conformité pré-projet.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="order-section" id="devis">
+        <div class="wrapper">
+            <div class="section-title reveal">
+                <h2>Demande de devis</h2>
+                <p>Précisez votre projet de chambre froide, nous dimensionnons les équipements adaptés à vos puissances frigorifiques.</p>
+            </div>
+            <div class="order-layout">
+                <aside class="order-box reveal">
+                    <h3>Nos engagements</h3>
+                    <ul>
+                        <li><i class="fas fa-thermometer-half"></i><span>Respect strict de la chaîne du froid et des normes HACCP</span></li>
+                        <li><i class="fas fa-battery-full"></i><span>Solutions basse consommation avec récupération d’énergie</span></li>
+                        <li><i class="fas fa-hard-hat"></i><span>Techniciens certifiés F-Gaz & habilitations électriques</span></li>
+                        <li><i class="fas fa-tachometer-alt"></i><span>Mise en service et paramétrage SCADA sous 72h</span></li>
+                        <li><i class="fas fa-headset"></i><span>Support technique 7j/7 pour nos clients sous contrat</span></li>
+                    </ul>
+                    <p style="margin-top:1.4rem;color:var(--gray-600);">
+                        Besoin d’un interlocuteur direct ? Écrivez-nous sur <strong>malekstructure@gmail.com</strong> ou appelez le <strong>0796096433</strong>.
+                    </p>
+                </aside>
+
+                <div class="order-box reveal">
+                    <form id="commandeForm">
+                        <h3>Vos informations</h3>
+                        <div class="group">
+                            <label for="nom">Nom complet *</label>
+                            <input type="text" id="nom" name="nom" required />
+                        </div>
+                        <div class="group">
+                            <label for="email">Email professionnel *</label>
+                            <input type="email" id="email" name="email" required />
+                        </div>
+                        <div class="group">
+                            <label for="telephone">Téléphone *</label>
+                            <input type="tel" id="telephone" name="telephone" required />
+                        </div>
+                        <div class="group">
+                            <label for="entreprise">Entreprise / Site</label>
+                            <input type="text" id="entreprise" name="entreprise" />
+                        </div>
+                        <div class="group">
+                            <label for="adresse">Adresse du projet *</label>
+                            <textarea id="adresse" name="adresse" required></textarea>
+                        </div>
+
+                        <h3>Équipements souhaités</h3>
+                        <div class="product-line reveal">
+                            <span>Chambres froides modulaires</span>
+                            <div class="qty-controls">
+                                <button type="button" class="qty-btn" data-product="chambres" data-action="minus">−</button>
+                                <strong id="qty-chambres">0</strong>
+                                <button type="button" class="qty-btn" data-product="chambres" data-action="plus">+</button>
+                            </div>
+                        </div>
+                        <div class="product-line reveal">
+                            <span>Compresseurs (toutes puissances)</span>
+                            <div class="qty-controls">
+                                <button type="button" class="qty-btn" data-product="compresseurs" data-action="minus">−</button>
+                                <strong id="qty-compresseurs">0</strong>
+                                <button type="button" class="qty-btn" data-product="compresseurs" data-action="plus">+</button>
+                            </div>
+                        </div>
+                        <div class="product-line reveal">
+                            <span>Évaporateurs</span>
+                            <div class="qty-controls">
+                                <button type="button" class="qty-btn" data-product="evaporateurs" data-action="minus">−</button>
+                                <strong id="qty-evaporateurs">0</strong>
+                                <button type="button" class="qty-btn" data-product="evaporateurs" data-action="plus">+</button>
+                            </div>
+                        </div>
+                        <div class="product-line reveal">
+                            <span>Panneaux sandwich</span>
+                            <div class="qty-controls">
+                                <button type="button" class="qty-btn" data-product="panneaux" data-action="minus">−</button>
+                                <strong id="qty-panneaux">0</strong>
+                                <button type="button" class="qty-btn" data-product="panneaux" data-action="plus">+</button>
+                            </div>
+                        </div>
+                        <div class="product-line reveal">
+                            <span>Portes de chambre froide</span>
+                            <div class="qty-controls">
+                                <button type="button" class="qty-btn" data-product="portes" data-action="minus">−</button>
+                                <strong id="qty-portes">0</strong>
+                                <button type="button" class="qty-btn" data-product="portes" data-action="plus">+</button>
+                            </div>
+                        </div>
+                        <div class="product-line reveal">
+                            <span>Armoires électriques</span>
+                            <div class="qty-controls">
+                                <button type="button" class="qty-btn" data-product="armoires" data-action="minus">−</button>
+                                <strong id="qty-armoires">0</strong>
+                                <button type="button" class="qty-btn" data-product="armoires" data-action="plus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="group">
+                            <label for="commentaire">Précisions complémentaires</label>
+                            <textarea id="commentaire" name="commentaire" placeholder="Ex : plage de température, surface, puissance souhaitée, fluides préférés…"></textarea>
+                        </div>
+
+                        <div class="counter reveal">
+                            <small>Total d’équipements sélectionnés</small>
+                            <span id="totalArticles">0</span>
+                        </div>
+
+                        <button type="submit" class="btn" style="width:100%; margin-top:1.5rem;">
+                            <i class="fas fa-paper-plane"></i> Envoyer la demande
+                        </button>
+                        <p style="font-size:0.85rem;color:var(--gray-600);margin-top:0.8rem;text-align:center;">
+                            En validant, vous acceptez nos conditions générales de vente.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="after-quote" id="apres-devis">
+        <div class="wrapper">
+            <div class="section-title reveal">
+                <h2>Après votre devis gratuit</h2>
+                <p>Notre équipe active un protocole précis pour livrer votre chambre froide dans les meilleurs délais.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-step reveal" data-step="01">
+                    <h4>Validation technique</h4>
+                    <p>Nous confirmons les puissances frigorifiques, les consignes de température et les contraintes électriques.</p>
+                </div>
+                <div class="timeline-step reveal" data-step="02">
+                    <h4>Planification chantier</h4>
+                    <p>Livraison des panneaux, mobilisation des techniciens F-Gaz et réservation des moyens de levage.</p>
+                </div>
+                <div class="timeline-step reveal" data-step="03">
+                    <h4>Installation & paramétrage</h4>
+                    <p>Montage des panneaux, raccordement compresseur/évaporateur, réglage des automates et tests d’étanchéité.</p>
+                </div>
+                <div class="timeline-step reveal" data-step="04">
+                    <h4>Formation & suivi</h4>
+                    <p>Remise du DOE, formation de vos équipes, activation de la télésurveillance et hotline dédiée.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="apropos">
+        <div class="wrapper">
+            <div class="section-title reveal">
+                <h2>À propos d’Asoual</h2>
+                <p>Une expertise multi-sectorielle pour garantir la chaîne du froid en toute circonstance.</p>
+            </div>
+            <div class="grid">
+                <article class="card reveal">
+                    <h3>18 ans d’expérience</h3>
+                    <p>Agroalimentaire, santé, grande distribution et laboratoires de recherche.</p>
+                </article>
+                <article class="card reveal">
+                    <h3>Bureau d’études intégré</h3>
+                    <p>Calculs thermiques, notes de dimensionnement, DOE et formations opérateurs.</p>
+                </article>
+                <article class="card reveal">
+                    <h3>Technologie connectée</h3>
+                    <p>Monitoring cloud, alertes SMS et rapports d’analyse énergétique automatisés.</p>
+                </article>
+                <article class="card reveal">
+                    <h3>Présence nationale</h3>
+                    <p>Équipes mobiles sur tout le territoire et partenaires certifiés à l’export.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="wrapper">
+            <div class="section-title reveal">
+                <h2>Contact</h2>
+                <p>Un conseiller froid industriel vous répond du lundi au vendredi.</p>
+            </div>
+            <div class="contact-grid">
+                <a class="contact-card reveal" href="tel:0796096433" target="_blank" aria-label="Appeler Asoual">
+                    <div class="card-icon"><i class="fas fa-phone"></i></div>
+                    <h3>Téléphone</h3>
+                    <p style="font-size:1.2rem;font-weight:700;">0796096433</p>
+                    <small>8h30 – 12h30 / 14h00 – 18h30</small>
+                </a>
+                <a class="contact-card reveal" href="mailto:malekstructure@gmail.com" target="_blank" aria-label="Envoyer un email à Asoual">
+                    <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                    <h3>Email</h3>
+                    <p style="font-size:1.05rem;font-weight:700;">malekstructure@gmail.com</p>
+                    <small>Réponse sous 24h ouvrées</small>
+                </a>
+                <div class="contact-card reveal">
+                    <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Siège & showroom</h3>
+                    <p>12 rue des Frigoristes – 69007 Lyon</p>
+                    <small>Visite sur rendez-vous</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrapper">
+            <div class="grid">
+                <div class="reveal">
+                    <h4>Asoual</h4>
+                    <p>Ingénierie, installations et maintenance de chambres froides haute performance.</p>
+                </div>
+                <div class="reveal">
+                    <h4>Navigation</h4>
+                    <a href="#accueil">Accueil</a><br />
+                    <a href="#solutions">Solutions</a><br />
+                    <a href="#installations">Installations</a><br />
+                    <a href="#devis">Devis</a><br />
+                    <a href="#apres-devis">Processus</a><br />
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="reveal">
+                    <h4>Documents</h4>
+                    <a href="#">Mentions légales</a><br />
+                    <a href="#">Politique de confidentialité</a><br />
+                    <a href="#">CGV</a><br />
+                    <a href="#">Support technique</a>
+                </div>
+            </div>
+            <p style="text-align:center;margin-top:2rem;color:var(--gray-400);">© 2026 Asoual – Tous droits réservés.</p>
+            <p class="footer-credit" style="text-align:center;">powered by sitemagique</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const burger = document.getElementById("burgerButton");
+            const drawer = document.getElementById("mobileDrawer");
+            burger.addEventListener("click", () => {
+                drawer.classList.toggle("open");
+                burger.innerHTML = drawer.classList.contains("open")
+                    ? '<i class="fas fa-times"></i>'
+                    : '<i class="fas fa-bars"></i>';
+            });
+            drawer.querySelectorAll("a").forEach(link => {
+                link.addEventListener("click", () => {
+                    drawer.classList.remove("open");
+                    burger.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+
+            const quantities = {
+                chambres: 0,
+                compresseurs: 0,
+                evaporateurs: 0,
+                panneaux: 0,
+                portes: 0,
+                armoires: 0
+            };
+            const totalEl = document.getElementById("totalArticles");
+
+            const updateTotals = () => {
+                const total = Object.values(quantities).reduce((acc, val) => acc + val, 0);
+                totalEl.textContent = total;
+                return total;
+            };
+
+            document.querySelectorAll(".qty-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const product = btn.dataset.product;
+                    if (btn.dataset.action === "plus") {
+                        quantities[product]++;
+                    } else if (quantities[product] > 0) {
+                        quantities[product]--;
+                    }
+                    document.getElementById(`qty-${product}`).textContent = quantities[product];
+                    updateTotals();
+                });
+            });
+
+            document.getElementById("commandeForm").addEventListener("submit", e => {
+                e.preventDefault();
+                if (updateTotals() === 0) {
+                    alert("Merci de sélectionner au moins un équipement avant d’envoyer la demande.");
+                    return;
+                }
+                const formData = Object.fromEntries(new FormData(e.target).entries());
+                alert(`Merci ${formData.nom} ! Votre demande a bien été transmise. Nous revenons vers vous rapidement avec un dimensionnement personnalisé.`);
+                e.target.reset();
+                Object.keys(quantities).forEach(key => {
+                    quantities[key] = 0;
+                    document.getElementById(`qty-${key}`).textContent = "0";
+                });
+                updateTotals();
+            });
+
+            const stepsData = [
+                {
+                    title: "Audit & relevés thermiques",
+                    desc: "Mesures hygrométriques, étude des flux, scénarios de charge simultanée et contraintes électriques pour bâtir un dossier complet.",
+                    bullets: [
+                        "Cartographie 3D des volumes et capteurs.",
+                        "Analyse des produits stockés et cycles de chargement.",
+                        "Rapport de conformité pré-projet."
+                    ]
+                },
+                {
+                    title: "Ingénierie & dimensionnement",
+                    desc: "Simulation des charges, sélection des compresseurs/évaporateurs, calcul des panneaux et rédaction des schémas électriques.",
+                    bullets: [
+                        "Bilans thermiques détaillés.",
+                        "Choix des fluides frigorigènes.",
+                        "Dossier d’exécution validé par le bureau d’études."
+                    ]
+                },
+                {
+                    title: "Montage & raccordements",
+                    desc: "Assemblage des panneaux sandwich, pose des portes, tirage des câbles et raccordement frigorifique sous contrôle F-Gaz.",
+                    bullets: [
+                        "Planification des équipes chantier.",
+                        "Tests d’étanchéité et mise sous pression.",
+                        "Contrôle qualité en fin d’étape."
+                    ]
+                },
+                {
+                    title: "Mise en service & supervision",
+                    desc: "Paramétrage des automates, essais de charge, formation des équipes et activation de la télésurveillance SCADA.",
+                    bullets: [
+                        "Stabilisation des consignes.",
+                        "Paramètres d’alarme personnalisés.",
+                        "Suivi énergétique et rapport de réception."
+                    ]
+                }
+            ];
+            const stepButtons = document.querySelectorAll(".step-btn");
+            const stepTitle = document.getElementById("stepTitle");
+            const stepDescription = document.getElementById("stepDescription");
+            const stepBullets = document.getElementById("stepBullets");
+            const progressBar = document.getElementById("progressBar");
+
+            const renderStep = index => {
+                const step = stepsData[index];
+                if (!step) return;
+                stepTitle.textContent = step.title;
+                stepDescription.textContent = step.desc;
+                stepBullets.innerHTML = step.bullets.map(item => `<li>${item}</li>`).join("");
+                progressBar.style.width = `${((index + 1) / stepsData.length) * 100}%`;
+                stepButtons.forEach(btn => btn.classList.remove("active"));
+                stepButtons[index].classList.add("active");
+            };
+
+            stepButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const idx = parseInt(btn.dataset.step, 10);
+                    renderStep(idx);
+                });
+            });
+
+            renderStep(0);
+
+            const revealElements = document.querySelectorAll(".reveal");
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
