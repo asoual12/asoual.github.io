@@ -105,7 +105,7 @@
             display: grid; 
             gap: 2rem; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            align-items: start; /* Empêche l'étirement vertical des colonnes */
+            align-items: start; 
         }
         .order-box { 
             background: var(--white); 
@@ -115,10 +115,9 @@
             border: 1px solid var(--gray-100); 
         }
         
-        /* Correction spécifique pour le bloc engagements sur PC */
         .order-box.sticky-box {
             position: sticky;
-            top: 100px; /* Colle au haut lors du scroll */
+            top: 100px;
         }
 
         .order-box h3 { margin-bottom: 1.2rem; }
@@ -421,7 +420,6 @@
                 <p>Précisez votre projet de chambre froide, nous dimensionnons les équipements adaptés à vos puissances frigorifiques.</p>
             </div>
             <div class="order-layout">
-                <!-- Bloc corrigé : ajout de sticky-box et align-self géré par order-layout -->
                 <aside class="order-box sticky-box reveal">
                     <h3>Nos engagements</h3>
                     <ul>
@@ -438,6 +436,19 @@
 
                 <div class="order-box reveal">
                     <form id="commandeForm">
+                        <!-- WEB3FORMS HIDDEN CONFIG -->
+                        <input type="hidden" name="access_key" value="84354d22-9ca9-4b20-a5e5-fb958c7bef41">
+                        <input type="hidden" name="subject" value="Nouveau devis Cold Atlas">
+                        <input type="hidden" name="from_name" value="Site Web Cold Atlas">
+                        
+                        <!-- QUANTITIES FOR EMAIL -->
+                        <input type="hidden" name="Qte_Chambres" id="hidden-chambres" value="0">
+                        <input type="hidden" name="Qte_Compresseurs" id="hidden-compresseurs" value="0">
+                        <input type="hidden" name="Qte_Evaporateurs" id="hidden-evaporateurs" value="0">
+                        <input type="hidden" name="Qte_Panneaux" id="hidden-panneaux" value="0">
+                        <input type="hidden" name="Qte_Portes" id="hidden-portes" value="0">
+                        <input type="hidden" name="Qte_Armoires" id="hidden-armoires" value="0">
+
                         <h3>Vos informations</h3>
                         <div class="group">
                             <label for="nom">Nom complet *</label>
@@ -520,9 +531,10 @@
                             <span id="totalArticles">0</span>
                         </div>
 
-                        <button type="submit" class="btn" style="width:100%; margin-top:1.5rem;">
+                        <button type="submit" class="btn" id="submitBtn" style="width:100%; margin-top:1.5rem; justify-content:center;">
                             <i class="fas fa-paper-plane"></i> Envoyer la demande
                         </button>
+                        <div id="formResponse" style="margin-top:1rem; text-align:center; font-weight:600;"></div>
                     </form>
                 </div>
             </div>
@@ -639,20 +651,66 @@
                     const product = btn.dataset.product;
                     if (btn.dataset.action === "plus") quantities[product]++;
                     else if (quantities[product] > 0) quantities[product]--;
+                    
                     document.getElementById(`qty-${product}`).textContent = quantities[product];
+                    // Update hidden fields for Web3Forms
+                    document.getElementById(`hidden-${product}`).value = quantities[product];
                     updateTotals();
                 });
             });
 
-            // Formulaire
-            document.getElementById("commandeForm").addEventListener("submit", e => {
+            // WEB3FORMS AJAX LOGIC
+            const form = document.getElementById("commandeForm");
+            const responseDiv = document.getElementById("formResponse");
+            const submitBtn = document.getElementById("submitBtn");
+
+            form.addEventListener("submit", function(e) {
                 e.preventDefault();
+                
                 if (updateTotals() === 0) {
                     alert("Merci de sélectionner au moins un équipement.");
                     return;
                 }
-                alert("Merci ! Votre demande a été transmise.");
-                e.target.reset();
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+
+                const formData = new FormData(form);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: json
+                })
+                .then(async (response) => {
+                    let result = await response.json();
+                    if (response.status == 200) {
+                        responseDiv.style.color = "#22a06b";
+                        responseDiv.innerHTML = "Merci ! Votre demande a été transmise avec succès.";
+                        form.reset();
+                        // Reset Quantities
+                        Object.keys(quantities).forEach(k => {
+                            quantities[k] = 0;
+                            document.getElementById(`qty-${k}`).textContent = "0";
+                            document.getElementById(`hidden-${k}`).value = "0";
+                        });
+                        updateTotals();
+                    } else {
+                        responseDiv.style.color = "#e63946";
+                        responseDiv.innerHTML = "Erreur : " + result.message;
+                    }
+                })
+                .catch(error => {
+                    responseDiv.style.color = "#e63946";
+                    responseDiv.innerHTML = "Une erreur est survenue lors de l'envoi.";
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer la demande';
+                    setTimeout(() => { responseDiv.innerHTML = ""; }, 5000);
+                });
             });
 
             // Stepper
